@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <package name="ssh" extends="struts-default" namespace="/">
+        <action name="lucene_search" class="com.njust.lucene.action.LuceneAction">
+            <result>/content/luceneList.jsp</result>
+        </action>
+        <action name ="HelloWorld" class ="com.njust.lucene.action.HelloAction" >
+            <result>index.jsp</result >
+        </action >
+    </package>
+</struts>
