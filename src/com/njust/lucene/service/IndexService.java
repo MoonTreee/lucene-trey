@@ -3,6 +3,7 @@ package com.njust.lucene.service;
 
 import com.njust.lucene.dao.IndexDao;
 import com.njust.lucene.domain.IndexData;
+import com.njust.lucene.util.PropertiesUtil;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
@@ -10,13 +11,13 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.ResourceBundle;
+
 import com.njust.lucene.util.ResourcesUtil;
 
 public class IndexService {
@@ -52,7 +53,7 @@ public class IndexService {
 	 * @throws Exception
 	 */
 
-	private void indexFromList(String indexDir, List<String[]> datas)throws Exception{
+	/*private void indexFromList(String indexDir, List<String[]> datas)throws Exception{
 		String indexPath = resourcesUtil. getResource(indexDir);
 		dir = FSDirectory.open(Paths.get(indexPath));
 		IndexWriter writer = getWriter();
@@ -66,10 +67,11 @@ public class IndexService {
 		}
 		writer.close();
 	}
-
+*/
 
 	public void index(){
-		String indexDir = "index";
+		PropertiesUtil propertiesUtil = new PropertiesUtil();
+		String indexDir = propertiesUtil.get("indexDir");
 		List<IndexData> indexList = indexDao.findAll();
 		try {
 			index(indexDir, indexList);
@@ -79,9 +81,8 @@ public class IndexService {
 	}
 
 	private void index(String indexDir, List<IndexData> indexList)throws Exception{
-		String indexPath = resourcesUtil.getResource(indexDir);
-		System.out.println("index 创建完成…… in " + indexPath );
-		dir = FSDirectory.open(Paths.get(indexPath));
+		System.out.println("index 创建完成…… in " + indexDir );
+		dir = FSDirectory.open(Paths.get(indexDir));
 		IndexWriter writer = getWriter();
 		for (IndexData indexData :indexList) {
 			Document doc = new Document();
@@ -140,9 +141,10 @@ public class IndexService {
 	public int count(){
 		return indexDao.count();
 	}
-
-	public static void main1(String[] args) {
-		IndexService indexService = new IndexService();
-		indexService.readFromDB();
-	}
+//
+//	public static void main(String[] args) {
+//		ResourceBundle resource = ResourceBundle.getBundle("indexDir");
+//		String key = resource.getString("indexDir");
+//		System.out.println(key);
+//	}
 }
