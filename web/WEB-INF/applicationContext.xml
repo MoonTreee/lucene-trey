@@ -36,19 +36,18 @@
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
-        <!-- 加载hibernate中的映射文件 -->
-        <!--<property name="mappingResources">-->
-        <!--<list>-->
-        <!--<value>com/njust/lucene/domain/Department.hbm.xml</value>-->
-        <!--<value>com/njust/lucene/domain/Employee.hbm.xml</value>-->
-        <!--<value>com/njust/lucene/domain/User.hbm.xml</value>-->
-        <!--</list>-->
-        <!--</property>-->
+         <!--加载hibernate中的映射文件 -->
+        <property name="mappingResources">
+        <list>
+        <value>com/njust/lucene/domain/Index.hbm.xml</value>
+        </list>
+        </property>
     </bean>
 
     <!--配置Action的类:prototype多例的-->
     <bean id="luceneAction" class="com.njust.lucene.action.LuceneAction" scope="prototype">
         <property name="luceneService" ref="luceneService"></property>
+        <property name="indexService" ref="indexService"></property>
     </bean>
     <!--<bean id="departmentAction" class="com.njust.lucene.action.DepartmentAction" scope="prototype">-->
     <!--<property name="departmentService" ref="departmentService"/>-->
@@ -58,16 +57,16 @@
     <!--</bean>-->
     <!--配置Service的类-->
     <bean id ="luceneService" class="com.njust.lucene.service.LuceneService"></bean>
-    <!--<bean id="departmentService" class="com.njust.lucene.service.impl.DepartmentServiceImpl">-->
-    <!--<property name="departmentDao" ref="departmentDao"/>-->
-    <!--</bean>-->
+    <bean id="indexService" class="com.njust.lucene.service.IndexService">
+    <property name="indexDao" ref="indexDao"/>
+    </bean>
     <!--<bean id="userService" class="com.njust.lucene.service.impl.UserServiceImpl">-->
     <!--<property name="userDao" ref="userDao"/>-->
     <!--</bean>-->
     <!--&lt;!&ndash;配置DAO&ndash;&gt;-->
-    <!--<bean id ="employeeDao" class="com.njust.lucene.dao.impl.EmployeeDaoImpl">-->
-    <!--<property name="sessionFactory" ref="sessionFactory"/>-->
-    <!--</bean>-->
+    <bean id ="indexDao" class="com.njust.lucene.dao.IndexDao">
+    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <!--<bean id="departmentDao" class="com.njust.lucene.dao.impl.DepartmentDaoImpl">-->
     <!--<property name="sessionFactory" ref="sessionFactory"/>-->
     <!--</bean>-->

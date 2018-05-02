@@ -1,6 +1,7 @@
 package com.njust.lucene.action;
 
 import com.njust.lucene.ov.IndexModel;
+import com.njust.lucene.service.IndexService;
 import com.njust.lucene.service.LuceneService;
 import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.convention.annotation.Action;
@@ -30,16 +31,28 @@ public class LuceneAction extends BaseAction{
 	}
 
 	private LuceneService luceneService;
+	private IndexService indexService;
 
+	public IndexService getIndexService() {
+		return indexService;
+	}
 
-//	@Action(value="search",results={@Result(name=SUCCESS,location="web/content/luceneList.jsp")})
+	public void setIndexService(IndexService indexService) {
+		this.indexService = indexService;
+	}
+
+	//	@Action(value="search",results={@Result(name=SUCCESS,location="web/content/luceneList.jsp")})
 	@Override
 	public String list() throws Exception {
 		List<IndexModel> luceneList=luceneService.search(keyword);
-		System.out.println("luceneList.size(): "+luceneList.size());
 		ActionContext.getContext().put("luceneList", luceneList);
 		return SUCCESS;
-	}	
+	}
+
+	public String index() throws Exception{
+		indexService.index();
+		return "INDEX";
+	}
 	
 //	@Action(value="commitRamIndex")
 //	public String commitRamIndex() throws Exception {

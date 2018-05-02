@@ -1,4 +1,4 @@
-package com.luo.vo;
+package com.njust.lucene.vo;
 
 import java.util.Date;
 

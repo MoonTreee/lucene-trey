@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.njust.lucene.domain.IndexData" table="indexData">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="fieldCode" column="fieldCode" length="10"/>
+        <property name="title" column="title" length="50"/>
+        <property name="keyWord" column="keyWord" length="150"/>
+        <property name="projectCode" column="projectCode" length="20"/>
+        <property name="organization" column="organization" length="20"/>
+        <property name="funds" column="funds" length="20"/>
+        <property name="year" column="year" length="4"/>
+    </class>
+</hibernate-mapping>

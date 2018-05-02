@@ -1,7 +1,9 @@
 package com.njust.lucene.service;
 
 
+import com.ctc.wstx.io.ReaderSource;
 import com.njust.lucene.ov.IndexModel;
+import com.njust.lucene.util.ResourcesUtil;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
@@ -28,12 +30,15 @@ public class LuceneService {
     /**
      * 返回的最大的搜索结果数量*/
     private static int HIT_MAX = 10;
+
     /**
-     * index的地址*/
-    private static String INDEX_DIR = "F:\\java\\lucene\\lucene-trey\\index" ;
+     * index的相对地址*/
+    private static String INDEX_DIR = "index" ;
+    private static ResourcesUtil resourcesUtil = new ResourcesUtil();
 
     public static List<IndexModel> search(String q) throws Exception{
-        return search(INDEX_DIR, q);
+        String indexDir = resourcesUtil.getResource(INDEX_DIR);
+        return search(indexDir, q);
     }
     private static List<IndexModel> search(String indexDir, String q)throws Exception{
         List<IndexModel> result = new ArrayList<>();
@@ -61,14 +66,9 @@ public class LuceneService {
             IndexModel indexModel = new IndexModel();
             Document doc = is.doc(scoreDoc.doc);
             indexModel.setId(doc.get("id"));
-            indexModel.setKey_word(doc.get("key_word"));
+            indexModel.setKey_word(doc.get("keyWord"));
             String title = doc.get("title");
             if(title != null){
-//                TokenStream tokenStream = analyzer.tokenStream("title", new StringReader(title));
-//                tokenStream.reset();
-//                System.out.println(highlighter.getBestFragment(tokenStream, title));
-//                indexModel.setTitle(highlighter.getBestFragment(tokenStream, title));
-//                tokenStream.close();
                 indexModel.setTitle(highlighter.getBestFragment(analyzer, "title", title));
             }
             result.add(indexModel);

@@ -5,8 +5,9 @@
 <html>
 <head>   <!-- 引入 echarts.js -->
 	<script src="content/js/echarts.min.js"></script></head>
-<title>index</title>
+<title>indexData</title>
 <body>
+<a href="lucene_index.action">更新索引</a>
 <form action="lucene_search.action" method="post" target="top">
 	<div class="loginBox" align="center>
 		<ul class="search">

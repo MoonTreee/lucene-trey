@@ -1,4 +1,4 @@
-package com.luo.test;
+package com.njust.lucene.test;
 
 import org.apache.solr.client.solrj.beans.Field;
 
