@@ -5,10 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
-import org.springframework.stereotype.Component;
 
-@Component("myPropertiesUtil")
 public class PropertiesUtil {
 	private static Properties properties=null;
 	
@@ -33,4 +32,16 @@ public class PropertiesUtil {
 	public static String get(String key){
 		return properties.getProperty(key);
 	}
+	public  static String get(String file, String key){
+		ResourceBundle resource = ResourceBundle.getBundle(file);
+		String value = resource.getString(key);
+		return value;
+	}
+
+//	public static void main(String[] args) {
+//		PropertiesUtil propertiesUtil = new PropertiesUtil();
+//		propertiesUtil.get("indexDir","indexDir");
+//	}
+
+
 }

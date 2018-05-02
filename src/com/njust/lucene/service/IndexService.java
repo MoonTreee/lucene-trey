@@ -71,7 +71,8 @@ public class IndexService {
 
 	public void index(){
 		PropertiesUtil propertiesUtil = new PropertiesUtil();
-		String indexDir = propertiesUtil.get("indexDir");
+		String indexDir = propertiesUtil.get("indexDir","indexDir");
+		System.out.println("index 开始创建…… in " + indexDir );
 		List<IndexData> indexList = indexDao.findAll();
 		try {
 			index(indexDir, indexList);
@@ -81,7 +82,6 @@ public class IndexService {
 	}
 
 	private void index(String indexDir, List<IndexData> indexList)throws Exception{
-		System.out.println("index 创建完成…… in " + indexDir );
 		dir = FSDirectory.open(Paths.get(indexDir));
 		IndexWriter writer = getWriter();
 		for (IndexData indexData :indexList) {
