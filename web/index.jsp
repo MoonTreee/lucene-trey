@@ -1,238 +1,75 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>   <!-- 引入 echarts.js -->
-	<script src="content/js/echarts.min.js"></script></head>
-<title>indexData</title>
-<body>
-<a href="lucene_index.action">更新索引</a>
-<form action="lucene_search.action" method="post" target="top">
-	<div class="loginBox" align="center>
-		<ul class="search">
-			<li class="l_tit">检索关键词</li>
-			<li class="mb_10"><input type="text" name="keyword" class="login_input user_icon"></li>
-			<li><input type="submit" value="检索" class="login_btn"></li>
-		</ul>
-	</div>
-</form>
-
-<div id="main" style="width: 600px;height:400px;"></div>
-<script type="text/javascript">
-
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-
-    var radarStyle = document.createElement("style");
-    var str = `
-    #radar:after {
-	  content: ' ';
-	  display: block;
-	  background-image: linear-gradient(44deg, rgba(0, 255, 51, 0) 50%, #00ff33 100%);
-	  width: 180px;
-	  height: 180px;
-	  position: absolute;
-	  top: 14%;
-	  left: 14%;
-	  animation: radar-beam 4s infinite;
-	  animation-timing-function: linear;
-	  transform-origin: bottom right;
-	  border-radius: 100% 0 0 0;
-	}
-	@keyframes radar-beam {
-	  0% {
-	    transform: rotate(0deg);
-	  }
-	  100% {
-	    transform: rotate(360deg);
-	  }
-	}
-`;
-    if(radarStyle.styleSheet){         //ie下
-        radarStyle.styleSheet.cssText = str;
-    } else {
-        radarStyle.innerHTML = str;
-    };
-    document.getElementsByTagName("head")[0].appendChild(radarStyle);
-
-    var radarDiv = document.createElement('div');
-    radarDiv.id = 'radar';
-    radarDiv.style.position = 'relative';
-    radarDiv.style.width = '500px';
-    radarDiv.style.height = '500px';
-    radarDiv.style.margin = '0 auto';
-    var body = document.querySelector('body');
-    body.appendChild(radarDiv);
-
-    var mockData = [{
-        text: '指标一',
-        value: 2
-    }, {
-        text: '指标二',
-        value: 3.2
-    }, {
-        text: '指标三',
-        value: 5
-    }, {
-        text: '指标四',
-        value: 4.1
-    }, {
-        text: '指标五',
-        value: 2.8
-    }];
-
-    var container = document.getElementById('radar');
-    var radar = echarts.init(container);
-
-    initRadar(mockData);
-
-    function initRadar(mockData){
-        var minAngle = 10;	// 最小角度
-        var indicator = [];
-        var data = [];
-        var idx = 0;
-        var randomArr = getRandom(360 / minAngle, mockData.length);
-        for(var i=0;i<360 / minAngle;i++){
-            if(randomArr.indexOf(i) > -1){
-                indicator.push({
-                    text: mockData[idx].text
-                });
-                data.push(mockData[idx].value);
-                idx++;
-            }else{
-                indicator.push({
-                    text: i * 10 + '`'
-                });
-                data.push('-');
-            }
-        };
-        var option = {
-            backgroundColor: '#333',
-            radar: [
-                {
-                    indicator: indicator,
-                    center: ['50%', '50%'],
-                    radius: 180,
-                    startAngle: 90,
-                    splitNumber: 4,
-                    shape: 'circle',
-                    name: {
-                        show: false,
-                        // formatter:'【{value}】',
-                        // textStyle: {
-                        //     color:'rgba(0, 255, 51, 1)'
-                        // }
-                    },
-                    splitArea: {
-                        areaStyle: {
-                            color: 'rgba(255, 255, 255, 0)'
-                        }
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: 'rgba(0, 255, 51, 0)'
-                        }
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: 'rgba(0, 255, 51, 1)'
-                        }
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: '雷达图',
-                    type: 'radar',
-                    symbol: 'circle',
-                    symbolSize: 24,
-                    silent: true,
-                    animationEasing: 'quarticOut',
-                    animationEasingUpdate: 'quarticOut',
-                    animationDuration: 2000,
-                    animationDurationUpdate: 2000,
-                    label: {
-                        normal: {
-                            show: true,
-                            textStyle: {
-                                color: 'rgba(0, 255, 51, 1)'
-                            }
-                        }
-                    },
-                    itemStyle: {
-                        normal: {
-                            opacity: 0
-                        },
-                        emphasis: {
-                            color: {
-                                type: 'radial',
-                                x: 0.5,
-                                y: 0.5,
-                                r: 0.3,
-                                colorStops: [{
-                                    offset: 0,
-                                    color: 'rgba(0, 255, 51, 1)'
-                                }, {
-                                    offset: 1,
-                                    color: 'rgba(255, 255, 255, .1)'
-                                }]
-                            },
-                            borderWidth: 0,
-                            opacity: 1
-                        }
-                    },
-                    data: [
-                        {
-                            value: data,
-                            label: {
-                                normal: {
-                                    textStyle: {
-                                        color: 'rgba(0, 255, 51, 1)'
-                                    }
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    opacity: 0
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        };
-
-        radar.setOption(option);
-
-        function getRandom(range, count){
-            var randomArr = [];
-            for(var i = 0;i < count;i++){
-                var r = Math.round(Math.random() * (range - 1));
-                randomArr.push(r);
-            }
-            return randomArr;
-        }
-    }
-
-    // 点动画
-    (function(){
-        var highlight = false;
-        var type;
-        setInterval(function(){
-            initRadar(mockData);
-            type = highlight ? 'downplay' : 'highlight';
-            radar.dispatchAction({
-                type: type,
-                seriesIndex: 0
-            });
-            highlight = !highlight;
-        }, 2000);
-    })();
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-</script>
-
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lucene中文检索--Trey</title>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="content/css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="content/css/style2.css" />
+    <!--[if IE]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]--><script>document.documentElement.className = 'js';</script>
+</head>
+<body class="demo-2">
+<svg class="hidden">
+    <defs>
+        <symbol id="icon-arrow" viewBox="0 0 24 24">
+            <title>arrow</title>
+            <polygon points="6.3,12.8 20.9,12.8 20.9,11.2 6.3,11.2 10.2,7.2 9,6 3.1,12 9,18 10.2,16.8 "/>
+        </symbol>
+        <symbol id="icon-drop" viewBox="0 0 24 24">
+            <title>drop</title>
+            <path d="M12,21c-3.6,0-6.6-3-6.6-6.6C5.4,11,10.8,4,11.4,3.2C11.6,3.1,11.8,3,12,3s0.4,0.1,0.6,0.3c0.6,0.8,6.1,7.8,6.1,11.2C18.6,18.1,15.6,21,12,21zM12,4.8c-1.8,2.4-5.2,7.4-5.2,9.6c0,2.9,2.3,5.2,5.2,5.2s5.2-2.3,5.2-5.2C17.2,12.2,13.8,7.3,12,4.8z"/><path d="M12,18.2c-0.4,0-0.7-0.3-0.7-0.7s0.3-0.7,0.7-0.7c1.3,0,2.4-1.1,2.4-2.4c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7C15.8,16.5,14.1,18.2,12,18.2z"/>
+        </symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24">
+            <title>search</title>
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </symbol>
+        <symbol id="icon-cross" viewBox="0 0 24 24">
+            <title>cross</title>
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </symbol>
+    </defs>
+</svg>
+<main class="main-wrap">
+    <div class="search">
+        <button id="btn-search-close" class="btn btn--search-close" aria-label="Close search form"><svg class="icon icon--cross"><use xlink:href="#icon-cross"></use></svg></button>
+        <form class="search__form" action="lucene_search.action">
+            <input id="search-input" class="search__input" name="keyword" type="search" placeholder="关键词" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+            <button class="btn btn--search"><svg class="icon icon--search"><use xlink:href="#icon-search"></use></svg></button>
+        </form>
+        <div class="search__suggestion">
+            <h3>May We Suggest?</h3>
+            <p>界面美化是不可能了，这辈子都不可能。只能呆呆地望着丑不拉几的界面，暗暗神伤。你要检索就检索吧，我速度很慢很不准出了事情我不负责的哈哈哈=-=。---Trey</p>
+        </div>
+    </div><!-- /search -->
+    <header class="codrops-header">
+        <div class="codrops-links">
+            <a class="codrops-icon codrops-icon--prev" href="https://github.com/MoonTreee/lucene-trey" title="我的GitHub"><svg class="icon icon--arrow"><use xlink:href="#icon-arrow"></use></svg></a>
+            <a class="codrops-icon codrops-icon--drop" href="https://www.google.com" title="google"><svg class="icon icon--drop"><use xlink:href="#icon-drop"></use></svg></a>
+        </div>
+        <h1 class="codrops-header__title">lucene中文检索系统</h1>
+        <div class="codrops-header__side">
+            <nav class="codrops-demos">
+                <span>More demos: </span>
+                <a href="lucene_index.action">创建索引</a>
+                <a class="current-demo" href="index2.html">2</a>
+                <a href="index3.html">3</a>
+                <a href="index4.html">4</a>
+                <a href="index5.html">5</a>
+                <a href="index6.html">6</a>
+                <a href="index7.html">7</a>
+                <a href="index8.html">8</a>
+                <a href="index9.html">9</a>
+                <a href="index10.html">10</a>
+                <a href="index11.html">11</a>
+            </nav>
+        </div>
+    </header>
+</main>
+<script src="content/js/demo2.js"></script>
 </body>
 </html>

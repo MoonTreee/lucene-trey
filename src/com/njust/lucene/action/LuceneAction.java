@@ -41,15 +41,14 @@ public class LuceneAction extends BaseAction{
 		this.indexService = indexService;
 	}
 
-	//	@Action(value="search",results={@Result(name=SUCCESS,location="web/content/luceneList.jsp")})
 	@Override
 	public String list() throws Exception {
-		List<IndexModel> luceneList=luceneService.search(keyword);
+		List<IndexModel> luceneList = luceneService.search(keyword);
 		ActionContext.getContext().put("luceneList", luceneList);
 		return SUCCESS;
 	}
 
-	public String index() throws Exception{
+	public String index() {
 		indexService.index();
 		return "INDEX";
 	}

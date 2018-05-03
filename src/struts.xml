@@ -7,7 +7,7 @@
 <struts>
     <package name="ssh" extends="struts-default" namespace="/">
         <action name="lucene_search" class="com.njust.lucene.action.LuceneAction" method="list">
-            <result>/content/luceneList.jsp</result>
+            <result>/content/list.jsp</result>
         </action>
         <action name ="lucene_index" class ="com.njust.lucene.action.LuceneAction" method="index">
             <result name="INDEX">index.jsp</result >

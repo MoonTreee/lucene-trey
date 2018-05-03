@@ -4,7 +4,7 @@
 <html>
   <head>
     
-    <title>My JSP 'user-success.jsp' starting page</title>
+    <title>检索结果</title>
 	<style type="text/css">
 		.highlighter{
 			color:red;
@@ -23,12 +23,19 @@
    		<th>ID</th>
    		<th>标题</th>
    		<th>关键词</th>
+		<th>单位</th>
+		<th>资助金额</th>
+		<th>年份</th>
+
    	</tr>
    	<c:forEach items="${luceneList}" var="m">
 	   	<tr>
 	   		<td>${m.id}</td>
 	   		<td>${m.title}</td>
-	   		<td>${m.key_word}</td>
+	   		<td>${m.keyWord}</td>
+			<td>${m.organization}</td>
+			<td>${m.funds}</td>
+			<td>${m.year}</td>
 	   	</tr>
    	</c:forEach>
    </table>

@@ -3,6 +3,7 @@ package com.njust.lucene.service;
 
 import com.ctc.wstx.io.ReaderSource;
 import com.njust.lucene.ov.IndexModel;
+import com.njust.lucene.util.PropertiesUtil;
 import com.njust.lucene.util.ResourcesUtil;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
@@ -33,11 +34,10 @@ public class LuceneService {
 
     /**
      * index的相对地址*/
-    private static String INDEX_DIR = "index" ;
-    private static ResourcesUtil resourcesUtil = new ResourcesUtil();
+    private static String INDEX_DIR = "indexDir" ;
 
     public static List<IndexModel> search(String q) throws Exception{
-        String indexDir = resourcesUtil.getResource(INDEX_DIR);
+        String indexDir = PropertiesUtil.get(INDEX_DIR,INDEX_DIR);
         return search(indexDir, q);
     }
     private static List<IndexModel> search(String indexDir, String q)throws Exception{
@@ -54,7 +54,7 @@ public class LuceneService {
         // 保存搜索结果
         TopDocs hits = is.search(query, HIT_MAX);
         long end = System.currentTimeMillis();
-        System.out.println("Search "+q+" ，Time "+(end-start)+" ms！"+" And got "+hits.totalHits+" hits");
+        System.out.println("Search "+q+" ，Time "+(end-start)+" ms！"+" And got "+hits.scoreDocs.length+" hits");
 
         QueryScorer scorer = new QueryScorer(query);
         Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);
@@ -66,11 +66,16 @@ public class LuceneService {
             IndexModel indexModel = new IndexModel();
             Document doc = is.doc(scoreDoc.doc);
             indexModel.setId(doc.get("id"));
-            indexModel.setKey_word(doc.get("keyWord"));
+            indexModel.setKeyWord(doc.get("keyWord"));
             String title = doc.get("title");
             if(title != null){
                 indexModel.setTitle(highlighter.getBestFragment(analyzer, "title", title));
             }
+            indexModel.setFieldCode(doc.get("fieldCode"));
+            indexModel.setProjectCode(doc.get("projectCode"));
+            indexModel.setOrganization(doc.get("organization"));
+            indexModel.setFunds(doc.get("funds"));
+            indexModel.setYear(doc.get("year"));
             result.add(indexModel);
         }
         reader.close();

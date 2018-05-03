@@ -9,7 +9,60 @@ package com.njust.lucene.ov;
 public class IndexModel {
     private String id;
     private String title;
-    private String key_word;
+    private String keyWord;
+    private String fieldCode;
+    private String projectCode;
+    private String organization;
+    private String funds;
+    private String year;
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
+    public String getFieldCode() {
+        return fieldCode;
+    }
+
+    public void setFieldCode(String fieldCode) {
+        this.fieldCode = fieldCode;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public String getFunds() {
+        return funds;
+    }
+
+    public void setFunds(String funds) {
+        this.funds = funds;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 
     public String getId() {
         return id;
@@ -27,11 +80,5 @@ public class IndexModel {
         this.title = title;
     }
 
-    public String getKey_word() {
-        return key_word;
-    }
 
-    public void setKey_word(String key_word) {
-        this.key_word = key_word;
-    }
 }

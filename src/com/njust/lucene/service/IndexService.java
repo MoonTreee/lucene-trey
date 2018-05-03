@@ -15,8 +15,6 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
 import com.njust.lucene.util.ResourcesUtil;
 
@@ -40,39 +38,20 @@ public class IndexService {
 	 * @return
 	 * @throws Exception
 	 */
-	private IndexWriter getWriter()throws Exception{
+	private IndexWriter getWriter() throws Exception {
 		//Analyzer analyzer  =  new StandardAnalyzer(); // 标准分词器
 		SmartChineseAnalyzer analyzer = new SmartChineseAnalyzer();
 		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-        return new IndexWriter(dir, iwc);
+		return new IndexWriter(dir, iwc);
 	}
 	
 	/**
 	 * 生成索引
-	 * @param indexDir
 	 * @throws Exception
 	 */
-
-	/*private void indexFromList(String indexDir, List<String[]> datas)throws Exception{
-		String indexPath = resourcesUtil. getResource(indexDir);
-		dir = FSDirectory.open(Paths.get(indexPath));
-		IndexWriter writer = getWriter();
-		for (String[] data : datas) {
-			Document doc = new Document();
-			doc.add(new StringField("id",data[0],Field.Store.YES));
-			doc.add(new StringField("index_word",data[2],Field.Store.YES));
-			doc.add(new TextField("title",data[3],Field.Store.YES));
-			doc.add(new TextField("key_word",data[5],Field.Store.YES));
-			writer.addDocument(doc); // 添加文档
-		}
-		writer.close();
-	}
-*/
-
-	public void index(){
-		PropertiesUtil propertiesUtil = new PropertiesUtil();
-		String indexDir = propertiesUtil.get("indexDir","indexDir");
-		System.out.println("index 开始创建…… in " + indexDir );
+	public void index() {
+		String indexDir = PropertiesUtil.get("indexDir", "indexDir");
+		System.out.println("index 开始创建…… in " + indexDir);
 		List<IndexData> indexList = indexDao.findAll();
 		try {
 			index(indexDir, indexList);
@@ -81,19 +60,24 @@ public class IndexService {
 		}
 	}
 
-	private void index(String indexDir, List<IndexData> indexList)throws Exception{
+	/**
+	 * 生成索引
+	 * @param indexDir  索引的目录
+	 * @param indexList  建立索引的数据
+	 * */
+	private void index(String indexDir, List<IndexData> indexList) throws Exception {
 		dir = FSDirectory.open(Paths.get(indexDir));
 		IndexWriter writer = getWriter();
-		for (IndexData indexData :indexList) {
+		for (IndexData indexData : indexList) {
 			Document doc = new Document();
-			doc.add(new StringField("id", indexData.getId(),Field.Store.YES));
-			doc.add(new StringField("fieldCode", indexData.getFieldCode(),Field.Store.YES));
-			doc.add(new TextField("title", indexData.getTitle(),Field.Store.YES));
-			doc.add(new TextField("keyWord", indexData.getKeyWord(),Field.Store.YES));
-			doc.add(new TextField("projectCode", indexData.getProjectCode(),Field.Store.YES));
-			doc.add(new TextField("organization", indexData.getOrganization(),Field.Store.YES));
-			doc.add(new TextField("funds", indexData.getFunds(),Field.Store.YES));
-			doc.add(new TextField("year", indexData.getYear(),Field.Store.YES));
+			doc.add(new StringField("id", indexData.getId(), Field.Store.YES));
+			doc.add(new StringField("fieldCode", indexData.getFieldCode(), Field.Store.YES));
+			doc.add(new TextField("title", indexData.getTitle(), Field.Store.YES));
+			doc.add(new TextField("keyWord", indexData.getKeyWord(), Field.Store.YES));
+			doc.add(new TextField("projectCode", indexData.getProjectCode(), Field.Store.YES));
+			doc.add(new TextField("organization", indexData.getOrganization(), Field.Store.YES));
+			doc.add(new TextField("funds", indexData.getFunds(), Field.Store.YES));
+			doc.add(new TextField("year", indexData.getYear(), Field.Store.YES));
 			writer.addDocument(doc); // 添加文档
 		}
 		writer.close();
@@ -105,9 +89,8 @@ public class IndexService {
 	 * 读取需要创建索引的资源文件 : 从文本中
 	 * @param path 需要读取的文件路径*/
 	private static List<String[]> readFromFile(String path){
-		String dataPath = resourcesUtil. getResource(path);
 		List<String[]> Ids = new ArrayList<>();
-		File file = new File(resourcesUtil. getResource(dataPath));
+		File file = new File(path);
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
@@ -129,22 +112,8 @@ public class IndexService {
 		return Ids;
 	}
 
-	/**
-	 * 读取需要创建索引的资源文件：从数据库中
-	 */
-	private  List<IndexData> readFromDB(){
-		List<String[]> list = new ArrayList<>();
-		List<IndexData> indexDataList = indexDao.findAll();
-		return indexDataList;
-	}
-
 	public int count(){
 		return indexDao.count();
 	}
-//
-//	public static void main(String[] args) {
-//		ResourceBundle resource = ResourceBundle.getBundle("indexDir");
-//		String key = resource.getString("indexDir");
-//		System.out.println(key);
-//	}
+
 }

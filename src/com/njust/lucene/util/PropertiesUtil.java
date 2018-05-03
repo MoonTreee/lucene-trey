@@ -22,8 +22,7 @@ public class PropertiesUtil {
 					properties.load(new FileInputStream(f));
 				}
 			}
-			System.out.println("properties初始化。。。。。。。。");
-			System.out.println(properties.get("uploadDir"));
+			System.out.println("properties start reading...");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -39,9 +38,7 @@ public class PropertiesUtil {
 	}
 
 //	public static void main(String[] args) {
-//		PropertiesUtil propertiesUtil = new PropertiesUtil();
-//		propertiesUtil.get("indexDir","indexDir");
+//		System.out.println(PropertiesUtil.get("indexDir","indexDir"));
 //	}
-
 
 }
