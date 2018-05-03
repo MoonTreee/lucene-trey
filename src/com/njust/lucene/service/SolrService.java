@@ -1,26 +1,12 @@
 package com.njust.lucene.service;
 
 import com.njust.lucene.dao.MessageDao;
-import com.njust.lucene.dao.TempIndexDao;
-import com.njust.lucene.domain.PageBean;
-import com.njust.lucene.ov.IndexField;
-import com.njust.lucene.ov.IndexModel;
-import com.njust.lucene.pojo.Message;
-import com.njust.lucene.util.IndexUtil;
+import com.njust.lucene.pojo.IndexField;
 import com.njust.lucene.util.SolrContext;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Trey Wang on 2018/5/2.

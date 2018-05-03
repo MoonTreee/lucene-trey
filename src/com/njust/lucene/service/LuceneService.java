@@ -1,11 +1,8 @@
 package com.njust.lucene.service;
 
 
-import com.ctc.wstx.io.ReaderSource;
-import com.njust.lucene.ov.IndexModel;
+import com.njust.lucene.pojo.IndexModel;
 import com.njust.lucene.util.PropertiesUtil;
-import com.njust.lucene.util.ResourcesUtil;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -18,9 +15,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.springframework.stereotype.Service;
 
-import java.io.StringReader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;

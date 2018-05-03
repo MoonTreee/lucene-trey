@@ -1,11 +1,8 @@
 package com.njust.lucene.action;
 
-import com.njust.lucene.domain.PageBean;
-import com.njust.lucene.ov.IndexModel;
+import com.njust.lucene.pojo.PageBean;
+import com.njust.lucene.pojo.IndexModel;
 import com.njust.lucene.service.SolrService;
-
-import static com.njust.lucene.action.BaseAction.LIST;
-import static com.opensymphony.xwork2.Action.SUCCESS;
 
 /**
  * Created by Trey Wang on 2018/5/2.

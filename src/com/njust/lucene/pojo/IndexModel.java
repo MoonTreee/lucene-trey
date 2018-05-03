@@ -1,4 +1,4 @@
-package com.njust.lucene.ov;
+package com.njust.lucene.pojo;
 
 
 /**

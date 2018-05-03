@@ -1,10 +1,5 @@
 package com.njust.lucene.util;
 
-import java.io.File;
-import java.io.IOException;
-
-import com.njust.lucene.ov.IndexField;
-import com.njust.lucene.pojo.Message;
 /*
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;

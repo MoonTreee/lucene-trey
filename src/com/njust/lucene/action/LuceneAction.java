@@ -1,14 +1,9 @@
 package com.njust.lucene.action;
 
-import com.njust.lucene.ov.IndexModel;
+import com.njust.lucene.pojo.IndexModel;
 import com.njust.lucene.service.IndexService;
 import com.njust.lucene.service.LuceneService;
 import com.opensymphony.xwork2.ActionContext;
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.Result;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 

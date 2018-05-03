@@ -1,4 +1,4 @@
-package com.njust.lucene.domain;
+package com.njust.lucene.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
