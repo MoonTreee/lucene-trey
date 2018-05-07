@@ -55,10 +55,10 @@
         <div class="codrops-header__side">
             <nav class="codrops-demos">
                 <span>More demos: </span>
-                <a href="lucene_index.action">创建索引</a>
+                <a href="lucene_index.action">新建索引</a>
                 <a class="current-demo" href="index2.html">2</a>
-                <a href="index3.html">3</a>
-                <a href="index4.html">4</a>
+                <a href="index3.html">删除索引</a>
+                <a href="index4.html">更新索引</a>
                 <a href="index5.html">5</a>
                 <a href="index6.html">6</a>
                 <a href="index7.html">7</a>
