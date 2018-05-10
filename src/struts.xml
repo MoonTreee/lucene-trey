@@ -12,5 +12,8 @@
         <action name ="lucene_index" class ="com.njust.lucene.action.LuceneAction" method="index">
             <result name="INDEX">index.jsp</result >
         </action >
+        <action name ="lucene_deleteAll" class ="com.njust.lucene.action.LuceneAction" method="deleteAll">
+            <result name="LIST">index.jsp</result >
+        </action >
     </package>
 </struts>

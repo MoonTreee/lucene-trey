@@ -48,6 +48,9 @@
 </head>
 
 <body>
+
+<div align=center><img width="350" height="350" src="http://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Mark.png"/></div>
+
 <table id= "customers">
     <tr>
         <th>ID</th>

@@ -139,16 +139,16 @@ public class SolrService {
     /**
      * 删除索引
      */
-    public void deleteIndex(IndexField indexField) {
-        try {
-            SolrContext.getSolrClient().deleteById(indexField.getId());
-            SolrContext.getSolrClient().commit();
-        } catch (SolrServerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void deleteIndex(IndexField indexField) {
+//        try {
+//            SolrContext.getSolrClient().deleteById(indexField.getId());
+//            SolrContext.getSolrClient().commit();
+//        } catch (SolrServerException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     public void commitDBIndex() {

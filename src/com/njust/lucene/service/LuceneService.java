@@ -7,6 +7,9 @@ import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -16,12 +19,14 @@ import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 
-//@Service
+/**
+ * 提供搜索服务*/
 public class LuceneService {
     /**
      * 返回的最大的搜索结果数量*/
@@ -31,7 +36,7 @@ public class LuceneService {
      * index的相对地址*/
     private static String INDEX_DIR = "indexDir" ;
 
-    public static List<IndexModel> search(String q) throws Exception{
+    public  List<IndexModel> search(String q) throws Exception{
         String indexDir = PropertiesUtil.get(INDEX_DIR,INDEX_DIR);
         return search(indexDir, q);
     }
@@ -76,4 +81,7 @@ public class LuceneService {
         reader.close();
         return result;
     }
+
+
+
 }

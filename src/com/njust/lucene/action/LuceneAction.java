@@ -67,10 +67,11 @@ public class LuceneAction extends BaseAction{
 //	}
 //
 //	@Action(value="deleteIndex")
-//	public String deleteIndex() throws Exception {
-//		luceneService.deleteIndex();
-//		return LIST;
-//	}
+	public String deleteAll() throws Exception {
+		indexService.deleteAll();
+        System.out.println("删除所有索引成功……");
+		return LIST;
+	}
 
 	@Override
 	public String execute() throws Exception {
