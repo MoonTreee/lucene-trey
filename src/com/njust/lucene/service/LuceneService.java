@@ -77,11 +77,21 @@ public class LuceneService {
             indexModel.setId(doc.get("id"));
             String keyWord = doc.get("keyWord");
             if (keyWord != null) {
-                indexModel.setKeyWord(highlighter.getBestFragment(analyzer, "keyWord", keyWord));
+                String hlKeyWord = highlighter.getBestFragment(analyzer, "keyWord", keyWord);
+                if (hlKeyWord != null) {
+                    indexModel.setKeyWord(hlKeyWord);
+                }else {
+                    indexModel.setKeyWord(keyWord);
+                }
             }
             String title = doc.get("title");
             if(title != null){
-                indexModel.setTitle(highlighter.getBestFragment(analyzer, "title", title));
+                String hlTitle = highlighter.getBestFragment(analyzer, "title", title);
+                if (hlTitle != null) {
+                    indexModel.setTitle(hlTitle);
+                }else {
+                    indexModel.setTitle(title);
+                }
             }
             indexModel.setFieldCode(doc.get("fieldCode"));
             indexModel.setProjectCode(doc.get("projectCode"));
