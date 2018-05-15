@@ -75,7 +75,10 @@ public class LuceneService {
             IndexModel indexModel = new IndexModel();
             Document doc = is.doc(scoreDoc.doc);
             indexModel.setId(doc.get("id"));
-            indexModel.setKeyWord(doc.get("keyWord"));
+            String keyWord = doc.get("keyWord");
+            if (keyWord != null) {
+                indexModel.setKeyWord(highlighter.getBestFragment(analyzer, "keyWord", keyWord));
+            }
             String title = doc.get("title");
             if(title != null){
                 indexModel.setTitle(highlighter.getBestFragment(analyzer, "title", title));

@@ -69,7 +69,7 @@ public class LuceneAction extends BaseAction{
 //	@Action(value="deleteIndex")
 	public String deleteAll() throws Exception {
 		indexService.deleteAll();
-        System.out.println("åˆ é™¤æ‰€æœ‰ç´¢å¼•æˆåŠŸâ€¦â€¦");
+        System.out.println("É¾³ıËùÓĞË÷Òı³É¹¦¡­¡­");
 		return LIST;
 	}
 
