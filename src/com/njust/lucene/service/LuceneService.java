@@ -9,12 +9,10 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -22,18 +20,20 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
- * æä¾›æœç´¢æœåŠ¡*/
+ * Ìá¹©ËÑË÷·şÎñ*/
 public class LuceneService {
     /**
-     * è¿”å›çš„æœ€å¤§çš„æœç´¢ç»“æœæ•°é‡*/
+     * ·µ»ØµÄ×î´óµÄËÑË÷½á¹ûÊıÁ¿*/
     private static int HIT_MAX = 10;
 
     /**
-     * indexçš„ç›¸å¯¹åœ°å€*/
+     * indexµÄÏà¶ÔµØÖ·*/
     private static String INDEX_DIR = "indexDir" ;
 
     public  List<IndexModel> search(String q) throws Exception{
@@ -43,22 +43,31 @@ public class LuceneService {
     private static List<IndexModel> search(String indexDir, String q)throws Exception{
         List<IndexModel> result = new ArrayList<>();
         Directory dir = FSDirectory.open(Paths.get(indexDir));
+        // todo ½üÊµÊ±ËÑË÷
         IndexReader reader = DirectoryReader.open(dir);
         IndexSearcher is = new IndexSearcher(reader);
-        // Analyzer analyzer = new StandardAnalyzer(); // æ ‡å‡†åˆ†è¯å™¨
+        // Analyzer analyzer = new StandardAnalyzer(); // ±ê×¼·Ö´ÊÆ÷
         SmartChineseAnalyzer analyzer = new SmartChineseAnalyzer();
-        //æŸ¥è¯¢è§£æå™¨ï¼šä½¿ç”¨å’Œç´¢å¼•åŒæ ·çš„è¯­è¨€åˆ†æå™¨ -- è¿™é‡Œåªå¯¹ title è¿›è¡Œæ£€ç´¢
-        QueryParser parser = new QueryParser("title", analyzer);
-        Query query = parser.parse(q);
+        //²éÑ¯½âÎöÆ÷£ºÊ¹ÓÃºÍË÷ÒıÍ¬ÑùµÄÓïÑÔ·ÖÎöÆ÷ -- ÕâÀïÖ»¶Ô title ½øĞĞ¼ìË÷
+//
+//        QueryParser parser = new QueryParser("title", analyzer);
+//        Query query = parser.parse(q);
+        // ¶àÓò²éÑ¯
+        String[] fields = {"title", "keyWord"};
+        Map<String, Float> boost = new HashMap<>();
+        boost.put("title", 2.0f);
+        boost.put("keyWord", 1.0f);
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(fields, analyzer, boost);
+        Query query = multiFieldQueryParser.parse(q);
         long start = System.currentTimeMillis();
-        // ä¿å­˜æœç´¢ç»“æœ
+        // ±£´æËÑË÷½á¹û
         TopDocs hits = is.search(query, HIT_MAX);
         long end = System.currentTimeMillis();
-        System.out.println("Search "+q+" ï¼ŒTime "+(end-start)+" msï¼"+" And got "+hits.scoreDocs.length+" hits");
+        System.out.println("Search "+q+" £¬Time "+(end-start)+" ms£¡"+" And got "+hits.scoreDocs.length+" hits");
 
         QueryScorer scorer = new QueryScorer(query);
         Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);
-        // é«˜äº®æ˜¾ç¤ºåŒ¹é…å­—ç¬¦
+        // ¸ßÁÁÏÔÊ¾Æ¥Åä×Ö·û
         SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color = 'blue'>","</font></b>");
         Highlighter highlighter = new Highlighter(simpleHTMLFormatter, scorer);
         highlighter.setTextFragmenter(fragmenter);
@@ -82,6 +91,17 @@ public class LuceneService {
         return result;
     }
 
+    public static void main1(String[] args) throws ParseException {
+        SmartChineseAnalyzer analyzer = new SmartChineseAnalyzer();
+        //²éÑ¯½âÎöÆ÷£ºÊ¹ÓÃºÍË÷ÒıÍ¬ÑùµÄÓïÑÔ·ÖÎöÆ÷ -- ÕâÀïÖ»¶Ô title ½øĞĞ¼ìË÷
+        String[] fields = {"title", "keyWord"};
+        Map<String, Float> boost = new HashMap<>();
+        boost.put("title", 2.0f);
+        boost.put("keyWord", 1.0f);
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(fields, analyzer, boost);
+        Query query = multiFieldQueryParser.parse("»úÆ÷Ñ§Ï°");
+        System.out.println(query.toString());
+    }
 
 
 }
